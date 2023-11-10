@@ -75,12 +75,13 @@ tinh_tich_phan_button.grid(row=2, column=0, columnspan=2, padx=10, pady=10)
 tim_kiem_button = tk.Button(root, text="Tìm tài liệu học tập", command=tim_kiem_tai_lieu)
 tim_kiem_button.grid(row=3, column=0, columnspan=2, padx=10, pady=10)
 
-thoat_button = tk.Button(root, text="Thoát", command=thoat_chuong_trinh)
-thoat_button.grid(row=5, column=0, columnspan=2, padx=10, pady=10)
-
 bieu_do_button = tk.Button(root, text="Hiển thị Biểu đồ", command=ve_bieu_do)
 bieu_do_button.grid(row=4, column=0, columnspan=2, padx=10, pady=10)
 
+thoat_button = tk.Button(root, text="Thoát", command=thoat_chuong_trinh)
+thoat_button.grid(row=5, column=0, columnspan=2, padx=10, pady=10)
 
+ket_qua_label = tk.Label(root, text="", wraplength=300)
+ket_qua_label.grid(row=6, column=0, columnspan=2, padx=10, pady=10)
 # Bắt đầu chương trình
 root.mainloop()
