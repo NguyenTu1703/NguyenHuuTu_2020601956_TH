@@ -1,0 +1,96 @@
+import numpy as np
+import tkinter as tk
+from tkinter import messagebox
+
+def giai_he_pt_tuyen_tinh(A, B):
+    try:
+        x = np.linalg.solve(A, B)
+        return x
+    except np.linalg.LinAlgError:
+        return None
+
+def giai_pt_button_click():
+    try:
+        num_equations = int(num_equations_var.get())
+        num_unknowns = int(num_unknowns_var.get())
+
+        A_values = []
+        for i in range(num_equations):
+            row_values = []
+            for j in range(num_unknowns):
+                entry_value = float(A_entries[i][j].get())
+                row_values.append(entry_value)
+            A_values.append(row_values)
+
+        A = np.array(A_values)
+        B = np.array([float(b_entries[i].get()) for i in range(num_equations)])
+
+        ket_qua = giai_he_pt_tuyen_tinh(A, B)
+
+        if ket_qua is not None:
+            messagebox.showinfo("Kết Quả", f"Nghiệm của hệ phương trình là: {ket_qua}")
+        else:
+            messagebox.showinfo("Lỗi", "Hệ phương trình có vô số nghiệm hoặc không có nghiệm.")
+    except ValueError:
+        messagebox.showerror("Lỗi", "Vui lòng nhập đúng giá trị số.")
+
+def update_entries():
+    num_equations = int(num_equations_var.get())
+    num_unknowns = int(num_unknowns_var.get())
+
+    for entry_list in A_entries:
+        for entry in entry_list:
+            entry.destroy()
+
+    for entry in b_entries:
+        entry.destroy()
+
+    A_entries.clear()
+    b_entries.clear()
+
+    create_entries()
+
+
+# Tạo cửa sổ chính
+root = tk.Tk()
+root.title("Giải Hệ Phương Trình Tuyến Tính")
+
+# Tạo nhãn và ô nhập liệu cho số lượng phương trình
+num_equations_label = tk.Label(root, text="Số phương trình:")
+num_equations_label.grid(row=2, column=0)
+num_equations_var = tk.StringVar()
+num_equations_spinbox = tk.Spinbox(root, from_=1, to=10, textvariable=num_equations_var, command=update_entries)
+num_equations_spinbox.grid(row=2, column=1)
+
+# Tạo nhãn và ô nhập liệu cho số lượng ẩn
+num_unknowns_label = tk.Label(root, text="Số ẩn:")
+num_unknowns_label.grid(row=2, column=2)
+num_unknowns_var = tk.StringVar()
+num_unknowns_spinbox = tk.Spinbox(root, from_=1, to=10, textvariable=num_unknowns_var, command=update_entries)
+num_unknowns_spinbox.grid(row=2, column=3)
+
+# Tạo ô nhập liệu cho ma trận A và vector B dựa trên số lượng phương trình và số lượng ẩn đã chọn
+A_entries = []
+b_entries = []
+
+def create_entries():
+    for i in range(int(num_equations_var.get())):
+        row_entries = []
+        for j in range(int(num_unknowns_var.get())):
+            entry = tk.Entry(root)
+            entry.grid(row=i + 3, column=j)
+            row_entries.append(entry)
+        A_entries.append(row_entries)
+
+        b_entry = tk.Entry(root)
+        b_entry.grid(row=i + 3, column=int(num_unknowns_var.get()))
+        b_entries.append(b_entry)
+
+create_entries()
+
+# Tạo nút giải phương trình
+giai_pt_button = tk.Button(root, text="Giải Phương Trình", command=giai_pt_button_click)
+giai_pt_button.grid(row=int(num_equations_var.get()) + 1, column=5, columnspan=int(num_unknowns_var.get()) + 1)
+
+# Chạy vòng lặp chính của giao diện người dùng
+root.mainloop()
