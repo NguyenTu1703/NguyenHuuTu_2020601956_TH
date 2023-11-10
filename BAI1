@@ -39,11 +39,13 @@ def update_entries():
     num_unknowns = int(num_unknowns_var.get())
 
     for entry_list in A_entries:
-        for entry in entry_list:
+        for entry, label in entry_list:
             entry.destroy()
+            label.destroy()
 
-    for entry in b_entries:
+    for entry, label in b_entries:
         entry.destroy()
+        label.destroy()
 
     A_entries.clear()
     b_entries.clear()
@@ -77,17 +79,19 @@ def create_entries():
     for i in range(int(num_equations_var.get())):
         row_entries = []
         for j in range(int(num_unknowns_var.get())):
+            label = tk.Label(root, text=f"A[{i + 1},{j + 1}]:")
+            label.grid(row=i + 3, column=j * 2)
             entry = tk.Entry(root)
-            entry.grid(row=i + 3, column=j)
-            row_entries.append(entry)
+            entry.grid(row=i + 3, column=j * 2 + 1)
+            row_entries.append((entry, label))
         A_entries.append(row_entries)
 
-        b_entry = tk.Entry(root)
-        b_entry.grid(row=i + 3, column=int(num_unknowns_var.get()))
-        b_entries.append(b_entry)
-
+        label = tk.Label(root, text=f"B[{i + 1}]:")
+        label.grid(row=i + 3, column=int(num_unknowns_var.get()) * 2)
+        entry = tk.Entry(root)
+        entry.grid(row=i + 3, column=int(num_unknowns_var.get()) * 2 + 1)
+        b_entries.append((entry, label))
 create_entries()
-
 # Tạo nút giải phương trình
 giai_pt_button = tk.Button(root, text="Giải Phương Trình", command=giai_pt_button_click)
 giai_pt_button.grid(row=int(num_equations_var.get()) + 1, column=5, columnspan=int(num_unknowns_var.get()) + 1)
