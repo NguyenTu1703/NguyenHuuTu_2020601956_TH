@@ -57,6 +57,31 @@ def tim_cuc_tri():
     except Exception as e:
         messagebox.showerror("Lỗi", "Lỗi, không tìm được cực trị")
 
+def hien_thi_bang_gia_tri():
+    try:
+        bieu_thuc = sp.simplify(bieu_thuc_entry.get())
+        x_vals = np.linspace(-10, 10, 10)
+        gia_tri = [sp.N(bieu_thuc.subs(x, val)) for val in x_vals]
+        dao_ham_gia_tri = [sp.N(sp.diff(bieu_thuc).subs(x, val)) for val in x_vals]
+
+        # Hiển thị bảng giá trị trong cửa sổ mới
+        new_window = tk.Toplevel(root)
+        new_window.title("Bảng Giá Trị")
+
+        gia_tri_label = tk.Label(new_window, text="Giá Trị Hàm Số")
+        gia_tri_label.grid(row=0, column=0, padx=5, pady=5)
+        dao_ham_label = tk.Label(new_window, text="Đạo Hàm")
+        dao_ham_label.grid(row=0, column=1, padx=5, pady=5)
+
+        for i in range(len(x_vals)):
+            tk.Label(new_window, text=f"x={x_vals[i]}").grid(row=i + 1, column=0)
+            tk.Label(new_window, text=f"{gia_tri[i]}").grid(row=i + 1, column=1)
+            tk.Label(new_window, text=f"{dao_ham_gia_tri[i]}").grid(row=i + 1, column=2)
+
+    except Exception as e:
+        messagebox.showerror("Lỗi", "Lỗi xảy ra: " + str(e))
+
+
 # Hàm để đóng ứng dụng
 def thoat_chuong_trinh():
     root.destroy()
@@ -87,10 +112,13 @@ bieu_do_button.grid(row=4, column=0, columnspan=2, padx=10, pady=10)
 cuc_tri_button = tk.Button(root, text="Tìm Cực Tiểu và Cực Đại", command=tim_cuc_tri)
 cuc_tri_button.grid(row=5, column=0, columnspan=2, padx=10, pady=10)
 
+bang_gia_tri_button = tk.Button(root, text="Hiển Thị Bảng Giá Trị", command=hien_thi_bang_gia_tri)
+bang_gia_tri_button.grid(row=6, column=0, columnspan=2, padx=10, pady=10)
+
 thoat_button = tk.Button(root, text="Thoát", command=thoat_chuong_trinh)
-thoat_button.grid(row=6, column=0, columnspan=2, padx=10, pady=10)
+thoat_button.grid(row=7, column=0, columnspan=2, padx=10, pady=10)
 
 ket_qua_label = tk.Label(root, text="", wraplength=300)
-ket_qua_label.grid(row=7, column=0, columnspan=2, padx=10, pady=10)
+ket_qua_label.grid(row=8, column=0, columnspan=2, padx=10, pady=10)
 # Bắt đầu chương trình
 root.mainloop()
