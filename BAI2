@@ -49,7 +49,13 @@ def ve_bieu_do():
         messagebox.showerror("Lỗi","Lỗi, Nhập hàm số khác")
 
 
-
+def tim_cuc_tri():
+    try:
+        bieu_thuc = sp.simplify(bieu_thuc_entry.get())
+        diem_cuc_tri = sp.solve(sp.diff(bieu_thuc))
+        ket_qua_label.config(text="Cực tiểu và cực đại là: " + str(diem_cuc_tri))
+    except Exception as e:
+        messagebox.showerror("Lỗi", "Lỗi, không tìm được cực trị")
 
 # Hàm để đóng ứng dụng
 def thoat_chuong_trinh():
@@ -78,10 +84,13 @@ tim_kiem_button.grid(row=3, column=0, columnspan=2, padx=10, pady=10)
 bieu_do_button = tk.Button(root, text="Hiển thị Biểu đồ", command=ve_bieu_do)
 bieu_do_button.grid(row=4, column=0, columnspan=2, padx=10, pady=10)
 
+cuc_tri_button = tk.Button(root, text="Tìm Cực Tiểu và Cực Đại", command=tim_cuc_tri)
+cuc_tri_button.grid(row=5, column=0, columnspan=2, padx=10, pady=10)
+
 thoat_button = tk.Button(root, text="Thoát", command=thoat_chuong_trinh)
-thoat_button.grid(row=5, column=0, columnspan=2, padx=10, pady=10)
+thoat_button.grid(row=6, column=0, columnspan=2, padx=10, pady=10)
 
 ket_qua_label = tk.Label(root, text="", wraplength=300)
-ket_qua_label.grid(row=6, column=0, columnspan=2, padx=10, pady=10)
+ket_qua_label.grid(row=7, column=0, columnspan=2, padx=10, pady=10)
 # Bắt đầu chương trình
 root.mainloop()
