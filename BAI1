@@ -18,21 +18,28 @@ def giai_pt_button_click():
         for i in range(num_equations):
             row_values = []
             for j in range(num_unknowns):
-                entry_value = float(A_entries[i][j].get())
-                row_values.append(entry_value)
+                entry_value = A_entries[i][j][0].get()  # Lấy giá trị từ Entry
+                try:
+                    entry_value = float(entry_value)
+                    row_values.append(entry_value)
+                except ValueError:
+                    messagebox.showerror("Lỗi", f"Giá trị không hợp lệ ở hàng {i + 1}, cột {j + 1}.")
+                    return
             A_values.append(row_values)
 
         A = np.array(A_values)
-        B = np.array([float(b_entries[i].get()) for i in range(num_equations)])
+        B = np.array([float(b_entries[i][0].get()) for i in range(num_equations)])
 
         ket_qua = giai_he_pt_tuyen_tinh(A, B)
 
         if ket_qua is not None:
-            messagebox.showinfo("Kết Quả", f"Nghiệm của hệ phương trình là: {ket_qua}")
+            messagebox.showinfo("Kết Quả", f" Vecto nghiệm của hệ phương trình là: {ket_qua}")
         else:
             messagebox.showinfo("Lỗi", "Hệ phương trình có vô số nghiệm hoặc không có nghiệm.")
     except ValueError:
         messagebox.showerror("Lỗi", "Vui lòng nhập đúng giá trị số.")
+
+
 
 def update_entries():
     num_equations = int(num_equations_var.get())
