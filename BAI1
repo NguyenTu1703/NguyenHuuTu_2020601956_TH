@@ -33,7 +33,8 @@ def giai_pt_button_click():
         ket_qua = giai_he_pt_tuyen_tinh(A, B)
 
         if ket_qua is not None:
-            messagebox.showinfo("Kết Quả", f" Vecto nghiệm của hệ phương trình là: {ket_qua}")
+            #messagebox.showinfo("Kết Quả", f" Vecto nghiệm của hệ phương trình là: {ket_qua}")
+            hien_thi_bang_nghiem(ket_qua);
         else:
             messagebox.showinfo("Lỗi", "Hệ phương trình có vô số nghiệm hoặc không có nghiệm.")
     except ValueError:
@@ -109,7 +110,11 @@ def xoa_nghiem_truoc():
         entry.delete(0, tk.END)
 
         label.config(text="")
-
+def hien_thi_bang_nghiem(nghiem):
+    new_window = tk.Toplevel(root)
+    new_window.title("Bảng Nghiệm")
+    for i in range(len(nghiem)):
+        tk.Label(new_window, text=f"x{i + 1} = {nghiem[i]}").grid(row=i, column=0, padx=10, pady=5)
 
 # Tạo nút giải phương trình
 giai_pt_button = tk.Button(root, text="Giải Phương Trình", command=giai_pt_button_click)
