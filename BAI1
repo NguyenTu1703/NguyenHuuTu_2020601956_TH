@@ -99,9 +99,25 @@ def create_entries():
         entry.grid(row=i + 3, column=int(num_unknowns_var.get()) * 2 + 1)
         b_entries.append((entry, label))
 create_entries()
+
+def xoa_nghiem_truoc():
+    for entry_list in A_entries:
+        for entry, label in entry_list:
+            entry.delete(0, tk.END)
+
+    for entry, label in b_entries:
+        entry.delete(0, tk.END)
+
+        label.config(text="")
+
+
 # Tạo nút giải phương trình
 giai_pt_button = tk.Button(root, text="Giải Phương Trình", command=giai_pt_button_click)
 giai_pt_button.grid(row=int(num_equations_var.get()) + 1, column=5, columnspan=int(num_unknowns_var.get()) + 1)
+
+# Thêm nút và gán hàm xoa_nghiem_truoc cho nút này
+xoa_nghiem_button = tk.Button(root, text="Xóa Nghiệm Trước", command=xoa_nghiem_truoc)
+xoa_nghiem_button.grid(row=int(num_equations_var.get()) + 1, column=7, columnspan=int(num_unknowns_var.get()) + 1)
 
 # Chạy vòng lặp chính của giao diện người dùng
 root.mainloop()
