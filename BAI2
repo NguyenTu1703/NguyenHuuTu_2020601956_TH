@@ -2,7 +2,7 @@ import sympy as sp
 import tkinter as tk
 from tkinter import messagebox
 import webbrowser
-
+import numpy as np
 # Hàm để tính đạo hàm của một hàm số
 def tinh_dao_ham():
     try:
@@ -10,7 +10,7 @@ def tinh_dao_ham():
         dao_ham = sp.diff(bieu_thuc)
         ket_qua_label.config(text="Đạo hàm của hàm số là: " + str(dao_ham))
     except Exception as e:
-        messagebox.showerror("Lỗi", "Lỗi xảy ra: " + str(e))
+        messagebox.showerror("Lỗi","Lỗi, Không tính được đạo hàm")
 
 # Hàm để tìm kiếm tài liệu học tập trên trình duyệt web
 def tim_kiem_tai_lieu():
@@ -23,7 +23,34 @@ def tinh_tich_phan():
         tich_phan = sp.integrate(bieu_thuc)
         ket_qua_label.config(text="Tích phân của hàm số là: " + str(tich_phan))
     except Exception as e:
-        messagebox.showerror("Lỗi", "Lỗi xảy ra: " + str(e))
+        messagebox.showerror("Lỗi", "Lỗi, không tính được tích phân: ")
+def ve_bieu_do():
+    try:
+        bieu_thuc = sp.simplify(bieu_thuc_entry.get())
+        fig, ax = plt.subplots(figsize=(6, 4))
+        x = sp.symbols('x')
+        f = sp.lambdify(x, bieu_thuc, 'numpy')
+        x_vals = np.linspace(-10, 10, 100)
+        y_vals = f(x_vals)
+        ax.plot(x_vals, y_vals, label=str(bieu_thuc))
+        ax.legend()
+        ax.set_title("Biểu đồ hàm số")
+        ax.set_xlabel("x")
+        ax.set_ylabel("y")
+
+        # Hiển thị biểu đồ trong cửa sổ mới
+        new_window = tk.Toplevel(root)
+        new_window.title("Biểu đồ hàm số")
+        canvas = FigureCanvasTkAgg(fig, master=new_window)
+        canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=1)
+        canvas.draw()
+
+    except Exception as e:
+        messagebox.showerror("Lỗi","Lỗi, Nhập hàm số khác")
+
+
+
+
 # Hàm để đóng ứng dụng
 def thoat_chuong_trinh():
     root.destroy()
@@ -48,11 +75,12 @@ tinh_tich_phan_button.grid(row=2, column=0, columnspan=2, padx=10, pady=10)
 tim_kiem_button = tk.Button(root, text="Tìm tài liệu học tập", command=tim_kiem_tai_lieu)
 tim_kiem_button.grid(row=3, column=0, columnspan=2, padx=10, pady=10)
 
-ket_qua_label = tk.Label(root, text="", wraplength=300)
-ket_qua_label.grid(row=4, column=0, columnspan=2, padx=10, pady=10)
-
 thoat_button = tk.Button(root, text="Thoát", command=thoat_chuong_trinh)
 thoat_button.grid(row=5, column=0, columnspan=2, padx=10, pady=10)
+
+bieu_do_button = tk.Button(root, text="Hiển thị Biểu đồ", command=ve_bieu_do)
+bieu_do_button.grid(row=4, column=0, columnspan=2, padx=10, pady=10)
+
 
 # Bắt đầu chương trình
 root.mainloop()
